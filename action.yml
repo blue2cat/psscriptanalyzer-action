@@ -81,4 +81,7 @@ runs:
         if(![string]::IsNullOrEmpty('${{ inputs.settings }}')) { $htPSA.add('Settings', '${{ inputs.settings }}') }
         $htCTS = [ordered]@{ FilePath = '${{ inputs.output }}'; }
         if(![string]::IsNullOrEmpty('${{ inputs.ignorePattern }}')) { $htCTS.add('IgnorePattern', '${{ inputs.ignorePattern }}') }
+
+        if(![string]::IsNullOrEmpty('${{ inputs.consoleLog }}')) { Invoke-ScriptAnalyzer @htPSA }
+
         Invoke-ScriptAnalyzer @htPSA | ConvertTo-SARIF @htCTS
