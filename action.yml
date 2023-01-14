@@ -64,8 +64,6 @@ runs:
           Install-Module -Name PSScriptAnalyzer -Force
         }
 
-        if ([string]::IsNullOrEmpty('${{ inputs.consoleLog }}')) { 
-
           $sarifModule = Get-Module -ListAvailable -Name ConvertToSARIF
 
           if ($null -eq $sarifModule) {
@@ -73,7 +71,7 @@ runs:
           }
           
           Import-Module -Name ConvertToSARIF -Force
-        }
+        
 
 
         $htPSA = [ordered]@{ Path = '${{ inputs.path }}'; }
@@ -93,5 +91,5 @@ runs:
         if (![string]::IsNullOrEmpty('${{ inputs.ignorePattern }}')) { $htCTS.add('IgnorePattern', '${{ inputs.ignorePattern }}') }
 
         if (![string]::IsNullOrEmpty('${{ inputs.consoleLog }}')) { Invoke-ScriptAnalyzer @htPSA }
-        
+
         if ([string]::IsNullOrEmpty('${{ inputs.consoleLog }}')) { Invoke-ScriptAnalyzer @htPSA | ConvertTo-SARIF @htCTS }
